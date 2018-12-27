@@ -52,8 +52,8 @@ cat /tmp/login_gcloud.txt
 # make a jenkinsx in gcp
 ###############################################################
 cat > /tmp/cluster.txt <<- "EOF"
-	#jx create cluster gke -n jxapp4 --username admin --default-admin-password admin123! --verbose=true --log-level debug
-	jx create cluster gke --skip-login=true -n jxapp4 --username admin --default-admin-password admin123! --verbose=true --log-level debug \
+	#jx create cluster gke -n jxapp5 --username admin --default-admin-password admin123! --verbose=true --log-level debug
+	jx create cluster gke --skip-login=true -n jxapp5 --username admin --default-admin-password admin123! --verbose=true --log-level debug \
 	 -p sodadevops -z northamerica-northeast1-a --machine-type n1-standard-2 --max-num-nodes 1 --min-num-nodes 1
 
 	? Domain 35.203.71.249.nip.io
@@ -66,7 +66,7 @@ cat > /tmp/cluster.txt <<- "EOF"
 	? Do you wish to use doohee323@gmail.com as the pipelines Git user for GitHub server: Yes
 
     ### Delete a cluster:
-	jx delete aws --log-level debug --vpc-id vpc-0ed6e1b6e1200437c jxapp4.cluster.k8s.local 
+	jx delete aws --log-level debug --vpc-id vpc-0ed6e1b6e1200437c jxapp5.cluster.k8s.local 
 	jx delete aws --log-level debug --vpc-id vpc-0ed6e1b6e1200437c aws1.cluster.k8s.local 
 
 	kubectl config get-contexts
@@ -82,12 +82,12 @@ cat > /tmp/cluster.txt <<- "EOF"
 
 	# delete jx-staging (namespace)
 	> jx context
-		gke_sodadevops_northamerica-northeast1-a_jxapp4
+		gke_sodadevops_northamerica-northeast1-a_jxapp5
 		...
 	> jx namespace
 		jx-staging
 	> jx uninstall
-		gke_sodadevops_northamerica-northeast1-a_jxapp4
+		gke_sodadevops_northamerica-northeast1-a_jxapp5
 
 	# remove context
 	jx context
@@ -137,15 +137,15 @@ cat > /tmp/check_env.txt <<- "EOF"
 	$ jx get env
 	NAME       LABEL       KIND        PROMOTE NAMESPACE     ORDER CLUSTER SOURCE                                                                REF PR
 	dev        Development Development Never   jx            0
-	staging    Staging     Permanent   Auto    jx-staging    100           https://github.com/doohee323/environment-jxapp4-staging.git
-	production Production  Permanent   Manual  jx-production 200           https://github.com/doohee323/environment-jxapp4-production.git
+	staging    Staging     Permanent   Auto    jx-staging    100           https://github.com/doohee323/environment-jxapp5-staging.git
+	production Production  Permanent   Manual  jx-production 200           https://github.com/doohee323/environment-jxapp5-production.git
 	
 	$ jx get apps
 	APPLICATION  STAGING PODS URL                                                PRODUCTION PODS URL
 	demo1001     0.0.3   1/1  http://demo1001.jx-staging.35.247.21.77.nip.io
 	jhapp        0.0.11       http://jhapp.jx-staging.35.247.21.77.nip.io
 	soda-gift    0.0.2   1/1  http://soda-gift.jx-staging.35.247.21.77.nip.io
-	jxapp4 0.0.3        http://jxapp4.jx-staging.35.247.21.77.nip.io
+	jxapp5 0.0.3        http://jxapp5.jx-staging.35.247.21.77.nip.io
 
 	# set api key
 	rm -Rf ~/.jx/jenkinsAuth.yaml
@@ -177,15 +177,15 @@ cat > /tmp/check_env.txt <<- "EOF"
 	$ jx get env
 	NAME       LABEL       KIND        PROMOTE NAMESPACE     ORDER CLUSTER SOURCE                                                                REF PR
 	dev        Development Development Never   jx            0
-	staging    Staging     Permanent   Auto    jx-staging    100           https://github.com/doohee323/environment-jxapp4-staging.git
-	production Production  Permanent   Manual  jx-production 200           https://github.com/doohee323/environment-jxapp4-production.git
+	staging    Staging     Permanent   Auto    jx-staging    100           https://github.com/doohee323/environment-jxapp5-staging.git
+	production Production  Permanent   Manual  jx-production 200           https://github.com/doohee323/environment-jxapp5-production.git
 	
 	$ jx get apps
 	APPLICATION  STAGING PODS URL                                                PRODUCTION PODS URL
 	demo1001     0.0.3   1/1  http://demo1001.jx-staging.35.247.21.77.nip.io
 	jhapp        0.0.11       http://jhapp.jx-staging.35.247.21.77.nip.io
 	soda-gift    0.0.2   1/1  http://soda-gift.jx-staging.35.247.21.77.nip.io
-	jxapp4 0.0.3        http://jxapp4.jx-staging.35.247.21.77.nip.io
+	jxapp5 0.0.3        http://jxapp5.jx-staging.35.247.21.77.nip.io
 EOF
 cat /tmp/check_env.txt
 
