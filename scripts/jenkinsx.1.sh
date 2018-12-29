@@ -53,8 +53,9 @@ cat /tmp/login_gcloud.txt
 ###############################################################
 cat > /tmp/cluster.txt <<- "EOF"
 	#jx create cluster gke -n tzops3 --username admin --default-admin-password admin123! --verbose=true --log-level debug
-	jx create cluster gke -n tzops3 --username admin --default-admin-password admin123! --verbose=true --log-level debug \
+	jx create cluster gke --no-tiller -n tzops3 --username admin --default-admin-password admin123! --verbose=true --log-level debug \
 	 -p tz-devops -z northamerica-northeast1-a --machine-type n1-standard-2 --max-num-nodes 3 --min-num-nodes 2
+	--skip-login=true 
 
 	? Domain 35.203.71.249.nip.io
 	? GitHub user name: doohee323@gmail.com

@@ -53,7 +53,7 @@ cat /tmp/login_gcloud.txt
 ###############################################################
 cat > /tmp/cluster.txt <<- "EOF"
 	#jx create cluster gke -n jxapp5 --username admin --default-admin-password admin123! --verbose=true --log-level debug
-	jx create cluster gke --skip-login=true -n jxapp5 --username admin --default-admin-password admin123! --verbose=true --log-level debug \
+	jx create cluster gke --no-tiller --skip-login=true -n jxapp5 --username admin --default-admin-password admin123! --verbose=true --log-level debug \
 	 -p sodadevops -z northamerica-northeast1-a --machine-type n1-standard-2 --max-num-nodes 1 --min-num-nodes 1
 
 	? Domain 35.203.71.249.nip.io
@@ -147,8 +147,9 @@ cat > /tmp/check_env.txt <<- "EOF"
 	soda-gift    0.0.2   1/1  http://soda-gift.jx-staging.35.247.21.77.nip.io
 	jxapp5 0.0.3        http://jxapp5.jx-staging.35.247.21.77.nip.io
 
-	# set api key
+	# reset api key
 	rm -Rf ~/.jx/jenkinsAuth.yaml
+	#rm -Rf .aws
 	rm -Rf .jx
 	rm -Rf .kube
 	rm -Rf .helm
@@ -223,13 +224,38 @@ cat > /tmp/make_app.txt <<- "EOF"
 EOF
 cat /tmp/make_app.txt
 
+cat > /tmp/expose_app.txt <<- "EOF"
+	kubectl get services demo
+	kubectl expose deployment jx-staging-jxapp --type=LoadBalancer --name=jxapp
+
+	$ kubectl get services
+	NAME   TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+	demo   ClusterIP   10.7.240.94   <none>        80/TCP    4m
+
+	$ kubectl get deployment
+	NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+	jx-demo   1         1         1            1           4m
+
+	$ kubectl expose deployment jx-demo --type=LoadBalancer --name=dp-demo3
+	service/dp-demo exposed
+
+	$ kubectl get services
+	NAME      TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+	demo      ClusterIP      10.7.240.94   <none>        80/TCP           6m
+	dp-demo   LoadBalancer   10.7.250.99   <pending>     8080:30549/TCP   8s
+
+	$ curl 35.203.113.59:8080
+
+	kubectl delete service dp-demo2
+EOF
+cat /tmp/expose_app.txt
+
 cat > /tmp/delete_app.txt <<- "EOF"
 	jx get apps
 	jx delete application
 
 EOF
 cat /tmp/delete_app.txt
-
 
 
 exit 0
